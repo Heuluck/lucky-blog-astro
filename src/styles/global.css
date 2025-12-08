@@ -85,6 +85,7 @@ a:hover {
 	color: var(--accent);
 }
 p {
+	font-size: 16px;
 	margin-bottom: 1em;
 }
 .prose p {

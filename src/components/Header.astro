@@ -12,6 +12,7 @@ import HeaderLink from './HeaderLink.astro';
     </div>
   </nav>
 </header>
+
 <style>
   header {
     display: flex;
@@ -25,30 +26,42 @@ import HeaderLink from './HeaderLink.astro';
     align-items: center;
     justify-content: space-between;
     width: fit-content;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(250, 250, 250, 0.7);
     border-radius: 3em;
     padding: 0.25em 0.25em;
-    backdrop-filter: blur(5px);
-  }
-  h2 {
-    margin: 0;
-    font-size: 1em;
-  }
-
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
+    backdrop-filter: blur(2px);
+    box-shadow:
+      inset 0 0 2px 1px rgba(255, 255, 255, 1),
+      inset 0 -1px 5px rgba(0, 0, 0, 0.1),
+      var(--box-shadow);
   }
   nav a {
-    padding: 0.5em 3em;
+    padding: 0.125em 1.25em;
     color: var(--black);
-    border-bottom: 4px solid transparent;
     text-decoration: none;
+    position: relative;
+    font-size: 19px;
   }
   nav a.active {
+    color: var(--accent);
+  }
+  nav a.active::after {
+    	animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow:
+      inset 0 0 2px 1px rgba(255, 255, 255, 0.3),
+      inset 0 -1px 2px rgba(255, 255, 255, 0.5),
+      0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 1px 2px -1px rgb(0 0 0 / 0.1);
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     text-decoration: none;
     background-color: rgba(200, 200, 200, 0.3);
     border-radius: 3em;
+    view-transition-name: active-link;
   }
   .social-links,
   .social-links a {

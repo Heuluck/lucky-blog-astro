@@ -158,5 +158,24 @@ hr {
 ::view-transition-old(active-link),
 ::view-transition-new(active-link),
 ::view-transition-group(active-link) {
-	animation-timing-function: cubic-bezier(0.34, 1.3, 0.7, 1);
+    animation-duration: .45s;
+    animation-timing-function: cubic-bezier(0.3, 1.3, 0.85, 1);
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    will-change: transform;
+    transform-origin: center center;
+}
+
+::view-transition-image-pair(active-link) {
+    animation: vt-inner-bump .45s linear 1 both;
+    transform-origin: center center;
+    will-change: transform;
+}
+
+
+@keyframes vt-inner-bump {
+    0%   { transform: scale(1); }
+    25%  { transform: scaleX(0.85) scaleY(1.2); } /* 横向压缩，纵向放大 */
+    60%  { transform: scaleX(1.025) scaleY(0.9); } /* 回弹 */
+    100% { transform: scale(1); } /* 小幅放大，改为 scale(1) 可回到原尺 */
 }

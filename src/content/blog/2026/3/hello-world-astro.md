@@ -1,5 +1,5 @@
 ---
-title: "你好世界（Astro 版）"
+title: "你好世界（Astro版）"
 pubDate: "Mar 6 2026"
 description: "虽然Hexo和Hugo都试过了，但是看到Astro还是感觉Astro好玩。"
 tags: "随记"

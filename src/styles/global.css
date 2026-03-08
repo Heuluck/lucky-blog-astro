@@ -79,6 +79,7 @@ body {
   color: rgb(var(--gray-dark));
   font-size: 20px;
   line-height: 1.7;
+  text-autospace: normal;
 }
 main {
   width: 720px;
@@ -98,29 +99,23 @@ h6 {
   font-weight: bold;
 }
 h1 {
-  font-size: 3.052em;
+  font-size: 2.5rem;
 }
 h2 {
-  font-size: 2.441em;
+  font-size: 2.0rem;
 }
 h3 {
-  font-size: 1.953em;
+  font-size: 1.7rem;
 }
 h4 {
-  font-size: 1.563em;
+  font-size: 1.5rem;
 }
 h5 {
-  font-size: 1.25em;
+  font-size: 1.25rem;
 }
 strong,
 b {
   font-weight: 700;
-}
-a {
-  color: var(--accent);
-}
-a:hover {
-  color: var(--accent);
 }
 p {
   font-size: 16px;
@@ -323,6 +318,12 @@ hr {
   }
   body {
     @apply bg-background text-foreground;
+  }
+  a {
+    color: var(--accent);
+  }
+  a:hover {
+    color: var(--accent);
   }
 }
 

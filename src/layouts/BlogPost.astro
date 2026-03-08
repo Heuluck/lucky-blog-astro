@@ -5,10 +5,13 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import Header from "../components/Header.astro";
+import BreadCrump from "@/components/BreadCrump.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { pathname } = Astro.url;
+const pathSegments = pathname.split("/").filter(Boolean);
 ---
 
 <html lang="zh-hans-CN">
@@ -55,7 +58,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         gap: 12px;
         justify-content: space-between;
       }
-      .header-content h1 {
+      h1 {
         font-size: 2.5rem;
         font-weight: 700;
         letter-spacing: -0.02em;
@@ -113,8 +116,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         main {
           padding: 1rem 1rem;
         }
-        .header-content{
+        .header-content {
           flex-direction: column;
+        }
+        .hero-image {
+          margin: 0 auto;
         }
       }
     </style>
@@ -124,6 +130,14 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
   <body>
     <Header />
     <main>
+      {
+        pathSegments?.[0] === "blog" && (
+          <BreadCrump
+            class="mb-2 ml-0.5"
+            items={[{ title: "博客", href: "/blog" }, { title: title }]}
+          />
+        )
+      }
       <article>
         <div class="prose" transition:name={`hero-prose-${Astro.props.title}`}>
           <div class="header-content">
@@ -155,7 +169,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
                     height={510}
                     src={heroImage}
                     alt=""
-                     class="hero-image"
+                    class="hero-image"
                     transition:name={`hero-image-${Astro.props.title}`}
                   />
                 )

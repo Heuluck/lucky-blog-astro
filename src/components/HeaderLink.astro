@@ -11,7 +11,7 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
 ---
 
-<a href={isActive ? undefined : href} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} class:list={[className, { active: isActive }]} {...props}>
   <span class="link-box"></span>
   <slot />
 </a>
@@ -23,7 +23,7 @@ const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
   }
   a.active {
     /* font-weight: bolder; */
-    text-decoration: underline;
+    /* text-decoration: underline; */
   }
   a .link-box {
     position: absolute;

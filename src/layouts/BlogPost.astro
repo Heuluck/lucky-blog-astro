@@ -17,7 +17,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     <style>
       main {
         width: 1024px;
-        max-width: calc(100% - 3em);
+        max-width: calc(100% - 0.5em);
         margin: 0 auto;
         padding: 2rem 1.25rem;
       }
@@ -51,6 +51,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         margin-bottom: 2rem;
         text-align: left;
         display: flex;
+        flex-direction: row;
+        gap: 12px;
         justify-content: space-between;
       }
       .header-content h1 {
@@ -110,6 +112,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
         }
         main {
           padding: 1rem 1rem;
+        }
+        .header-content{
+          flex-direction: column;
         }
       }
     </style>

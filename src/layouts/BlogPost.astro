@@ -16,70 +16,146 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
     <BaseHead title={title} description={description} />
     <style>
       main {
-        width: calc(100% - 2em);
-        max-width: 100%;
-        margin: 0;
+        width: 1024px;
+        max-width: calc(100% - 3em);
+        margin: 0 auto;
+        padding: 2rem 1.25rem;
       }
       .hero-image {
-        width: 100%;
+        width: 320px;
+        height: 180px;
+        border-radius: 12px;
+        object-fit: cover;
+        flex-shrink: 0;
+        background-color: rgba(0, 0, 0, 0.05);
       }
       .hero-image img {
         display: block;
         margin: 0 auto;
-        border-radius: 12px;
-        box-shadow: var(--box-shadow);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: auto;
+        border: 1px solid rgba(0, 0, 0, 0.05);
       }
       .prose {
-        width: 720px;
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 1em;
-        color: rgb(var(--gray-dark));
+        width: 100%;
+        color: #1d1d1f;
+
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 18px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 28px 56px;
       }
-      .title {
-        margin-bottom: 1em;
-        padding: 1em 0;
-        text-align: center;
-        line-height: 1;
+      .header-content {
+        margin-bottom: 2rem;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
       }
-      .title h1 {
-        margin: 0 0 0.5em 0;
+      .header-content h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin: 0.5rem 0 1rem 0;
+        line-height: 1.15;
+        color: #000;
+      }
+      .header-content .description {
+        color: #86868b;
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
       }
       .date {
-        margin-bottom: 0.5em;
-        color: rgb(var(--gray));
+        color: #86868b;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.5rem;
       }
       .last-updated-on {
         font-style: italic;
+        font-weight: 400;
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        margin: 2rem 0;
+      }
+      @media (prefers-color-scheme: dark) {
+        .prose {
+          color: #f5f5f7;
+        }
+        .title {
+          color: #fff;
+        }
+        .date {
+          color: #86868b;
+        }
+        .hero-image img {
+          border-color: rgba(255, 255, 255, 0.1);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        hr {
+          border-top-color: rgba(255, 255, 255, 0.1);
+        }
+      }
+      @media (max-width: 720px) {
+        .title {
+          font-size: 2rem;
+        }
+        main {
+          padding: 1rem 1rem;
+        }
       }
     </style>
+    <style is:global></style>
   </head>
 
   <body>
     <Header />
     <main>
       <article>
-        <div class="hero-image">
-          <!-- {heroImage && <Image width={1020} height={510} src={heroImage} alt="" />} -->
-        </div>
-        <div class="prose">
-          <div class="title">
-            <div class="date">
-              <FormattedDate date={pubDate} />
+        <div class="prose" transition:name={`hero-prose-${Astro.props.title}`}>
+          <div class="header-content">
+            <div>
+              <div class="date">
+                <FormattedDate date={pubDate} />
+                {
+                  updatedDate && (
+                    <div class="last-updated-on">
+                      Last updated on <FormattedDate date={updatedDate} />
+                    </div>
+                  )
+                }
+              </div>
+              <h1>
+                <span transition:name={`post-title-${Astro.props.title}`}>
+                  {title}
+                </span>
+              </h1>
+              <p class="description">
+                {description}
+              </p>
+            </div>
+            <div>
               {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
+                heroImage && (
+                  <Image
+                    width={1020}
+                    height={510}
+                    src={heroImage}
+                    alt=""
+                     class="hero-image"
+                    transition:name={`hero-image-${Astro.props.title}`}
+                  />
                 )
               }
             </div>
-            <h1>
-              <span transition:name={`post-title-${Astro.props.title}`}>
-                {title}
-              </span>
-            </h1>
-            <hr />
           </div>
           <slot />
         </div>

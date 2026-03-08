@@ -325,3 +325,7 @@ hr {
     @apply bg-background text-foreground;
   }
 }
+
+::view-transition-group(*) {
+  animation-duration: 450ms;
+}

@@ -8,9 +8,12 @@ export async function GET(context) {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     site: context.site,
-    items: posts.map((post) => ({
-      ...post.data,
-      link: `/blog/${post.id.split("/")[2]}/`,
-    })),
+    items: posts.map((post) => {
+      if (post.data?.draft) return null;
+      return {
+        ...post.data,
+        link: `/blog/${post.id.split("/")[2]}/`,
+      };
+    }).filter(Boolean),
   });
 }

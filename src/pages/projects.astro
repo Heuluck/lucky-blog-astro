@@ -1,73 +1,555 @@
 ---
-import AboutHeroImage from "../assets/blog-placeholder-about.jpg";
-import Layout from "../layouts/BlogPost.astro";
+import { Image } from "astro:assets";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { projects } from "./project/data";
+
+const grouped = Map.groupBy(projects, (p) => p.year);
+const years = [...grouped.keys()].sort((a, b) => b - a);
 ---
 
-<Layout
-  title="Projects"
-  description="Lorem ipsum dolor sit amet"
-  pubDate={new Date("August 08 2021")}
-  heroImage={AboutHeroImage}
->
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo
-    integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis
-    egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In
-    hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat.
-    Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu
-    non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim.
-    Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed
-    vulputate mi. Dictumst quisque sagittis purus sit amet.
-  </p>
+<!doctype html>
+<html lang="zh-Hans-CN">
+  <head>
+    <BaseHead title="Projects" description="我所参与和开发的项目时间轴" />
+    <style>
+      main {
+        width: 860px;
+        max-width: calc(100% - 2em);
+        margin: 0 auto;
+        padding: 3rem 1rem 5rem;
+      }
 
-  <p>
-    Morbi tristique senectus et netus. Id semper risus in hendrerit gravida
-    rutrum quisque non tellus. Habitasse platea dictumst quisque sagittis purus
-    sit amet. Tellus molestie nunc non blandit massa. Cursus vitae congue mauris
-    rhoncus. Accumsan tortor posuere ac ut. Fringilla urna porttitor rhoncus
-    dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-    massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius
-    morbi enim nunc. Bibendum neque egestas congue quisque egestas diam. Cras
-    ornare arcu dui vivamus arcu felis bibendum. Dignissim suspendisse in est
-    ante in nibh mauris. Sed tempus urna et pharetra pharetra massa massa
-    ultricies mi.
-  </p>
+      /* ── Hero 标题区 ── */
+      .hero {
+        min-height: 50vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 1rem 0 0;
+      }
+      .hero-title {
+        font-size: clamp(2.75rem, 7vw, 4.5rem);
+        font-weight: 800;
+        letter-spacing: -0.035em;
+        line-height: 0.95;
+        margin: 0;
+        color: rgb(var(--black));
+      }
+      .hero-sub {
+        margin: 1.25rem 0 0;
+        max-width: 32em;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: rgb(var(--gray));
+      }
 
-  <p>
-    Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque.
-    Diam sit amet nisl suscipit. Lacus viverra vitae congue eu consequat ac
-    felis donec. Egestas integer eget aliquet nibh praesent tristique magna sit
-    amet. Eget magna fermentum iaculis eu non diam. In vitae turpis massa sed
-    elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-    dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra.
-    Posuere ac ut consequat semper viverra nam. Laoreet suspendisse interdum
-    consectetur libero id faucibus. Diam phasellus vestibulum lorem sed risus
-    ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-    facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed
-    risus pretium quam vulputate. Viverra suspendisse potenti nullam ac tortor
-    vitae purus faucibus ornare. Fringilla urna porttitor rhoncus dolor purus
-    non. Amet dictum sit amet justo donec enim.
-  </p>
+      .timeline-container {
+        position: relative;
+        margin-top: 0.6dvh;
+        padding-left: 80px;
+      }
 
-  <p>
-    Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac
-    ut consequat semper viverra. Tellus mauris a diam maecenas sed enim ut sem
-    viverra. Venenatis urna cursus eget nunc scelerisque viverra mauris in. Arcu
-    ac tortor dignissim convallis aenean et tortor at. Curabitur gravida arcu ac
-    tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-    pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim
-    sit amet. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam.
-    Id donec ultrices tincidunt arcu. Id cursus metus aliquam eleifend mi.
-  </p>
+      /* ── 脊柱 ── */
+      .timeline-spine {
+        position: absolute;
+        left: 38.5px;
+        top: 0;
+        width: 3px;
+        height: 0;
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--accent) 0px,
+          var(--accent) 6px,
+          transparent 6px,
+          transparent 14px
+        );
+        will-change: height;
+      }
 
-  <p>
-    Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus
-    imperdiet. Id porta nibh venenatis cras sed felis eget velit. Ipsum a arcu
-    cursus vitae. Facilisis magna etiam tempor orci eu lobortis elementum.
-    Tincidunt dui ut ornare lectus sit. Quisque non tellus orci ac. Blandit
-    libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed
-    pulvinar proin gravida. Egestas integer eget aliquet nibh praesent tristique
-    magna.
-  </p>
-</Layout>
+      /* 时间轴绘制头 */
+      .spine-head {
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      /* ── 年份段落 ── */
+      .timeline-year {
+        position: relative;
+        padding-top: 24px;
+        padding-bottom: 12px;
+      }
+      .timeline-year + .timeline-year {
+        margin-top: 48px;
+      }
+
+      /* ── 年份标记 (竖排，跨脊柱) ── */
+      .year-marker {
+        position: absolute;
+        left: -64px;
+        top: 0;
+        font-family: "Atkinson", sans-serif;
+        font-size: 5rem;
+        font-weight: 800;
+        line-height: 0.85;
+        letter-spacing: -0.04em;
+        color: #1d1d1f;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        user-select: none;
+        opacity: 0.12;
+        z-index: 0;
+      }
+
+      /* ── 项目行 ── */
+      .project-row {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px 0;
+        animation: fade-in-up 0.6s ease both;
+        animation-delay: calc(var(--i, 0) * 0.1s);
+      }
+      @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* 连接脊柱的圆点 */
+      .project-dot {
+        position: absolute;
+        left: -45px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgb(var(--gray));
+        z-index: 2;
+        transition: box-shadow 0.3s, background 0.3s;
+      }
+      .project-row.status-active .project-dot {
+        background: var(--accent);
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+      @keyframes pulse-dot {
+        0%, 100% { box-shadow: 0 0 0 0 var(--accent); }
+        50%      { box-shadow: 0 0 0 8px transparent; }
+      }
+
+      /* A ── 穿过后的圆点填色 ── */
+      .project-dot.passed {
+        background: var(--accent);
+      }
+
+      /* D ── 波纹爆发 ── */
+      .dot-ripple {
+        position: absolute;
+        inset: -12px;
+        border-radius: 50%;
+        border: 2px solid var(--accent);
+        animation: ripple-out 0.6s ease-out forwards;
+        pointer-events: none;
+      }
+      @keyframes ripple-out {
+        0%   { transform: scale(0.2); opacity: 1; }
+        100% { transform: scale(1);   opacity: 0; }
+      }
+
+      /* G ── 年份呼吸 ── */
+      .year-marker.breathing {
+        animation: year-breathe 1.2s ease-in-out;
+      }
+      @keyframes year-breathe {
+        0%   { opacity: 0.12; }
+        25%  { opacity: 0.35; }
+        100% { opacity: 0.12; }
+      }
+
+      /* 连接脊柱的水平短线 */
+      .project-row::after {
+        content: "";
+        position: absolute;
+        left: -35px;
+        top: 50%;
+        width: 35px;
+        height: 1px;
+        background: rgb(var(--gray-light));
+      }
+
+      /* ── 项目图片 ── */
+      .project-image {
+        width: 160px;
+        height: 100px;
+        border-radius: 8px;
+        object-fit: cover;
+        flex-shrink: 0;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      /* ── 项目内容区 ── */
+      .project-content {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-right: 32px;
+      }
+
+      /* role 微标签 */
+      .role-tag {
+        display: inline-block;
+        width: fit-content;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 100px;
+        background: rgba(var(--gray-light), 0.55);
+        color: rgb(var(--gray));
+        margin-bottom: 6px;
+        letter-spacing: 0.02em;
+      }
+
+      .project-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+        color: rgb(var(--black));
+        line-height: 1.3;
+      }
+
+      .project-desc {
+        font-size: 0.85rem;
+        color: rgb(var(--gray));
+        margin: 0;
+        line-height: 1.65;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* ── 链接按钮 ── */
+      .project-link {
+        position: absolute;
+        right: 0;
+        top: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+        color: var(--accent);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        z-index: 1;
+      }
+      .project-link:hover {
+        transform: translate(2px, -2px);
+        background: rgba(var(--gray-light), 0.4);
+      }
+
+      /* ── 暗色模式 ── */
+      @media (prefers-color-scheme: dark) {
+        .year-marker {
+          color: #f5f5f7;
+          opacity: 0.15;
+        }
+        .project-title {
+          color: #f5f5f7;
+        }
+        .project-desc {
+          color: #a1a1a6;
+        }
+        .project-image {
+          border-color: rgba(255, 255, 255, 0.1);
+        }
+        .project-row::after {
+          background: rgba(255, 255, 255, 0.1);
+        }
+        .role-tag {
+          background: rgba(255, 255, 255, 0.08);
+          color: #98989d;
+        }
+        .project-link:hover {
+          background: rgba(255, 255, 255, 0.08);
+        }
+      }
+
+      /* ── 移动端 ── */
+      @media (max-width: 720px) {
+        .hero {
+          min-height: 44vh;
+        }
+        .hero-title {
+          font-size: clamp(2.25rem, 11vw, 3rem);
+        }
+        .timeline-container {
+          padding-left: 48px;
+        }
+        .timeline-spine {
+          left: 24px;
+        }
+        .year-marker {
+          left: -38px;
+          font-size: 3.5rem;
+        }
+        .project-row {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .project-dot {
+          left: -28px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 8px;
+          height: 8px;
+        }
+        .project-row::after {
+          left: -20px;
+          top: 50%;
+          width: 20px;
+        }
+        .project-image {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 16 / 10;
+        }
+        .project-content {
+          padding-right: 0;
+        }
+        .project-link {
+          top: auto;
+          bottom: 24px;
+          right: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <header class="hero">
+        <h1 class="hero-title">Projects</h1>
+        <p class="hero-sub">
+          一些写过的代码、做过的东西。
+        </p>
+      </header>
+      <div class="timeline-container">
+        <div class="timeline-spine" transition:name="timeline-spine">
+          <div class="spine-head"></div>
+        </div>
+
+        {
+          years.map((year) => (
+            <section class="timeline-year">
+              <div
+                class="year-marker"
+                transition:name={`timeline-year-${year}`}
+              >
+                {year}
+              </div>
+              <div class="year-projects">
+                {grouped.get(year)!.map((project, i) => (
+                  <article
+                    class={`project-row ${project.status === "进行中" ? "status-active" : ""}`}
+                    style={`--i: ${i}`}
+                  >
+                    <span class="project-dot" data-title={project.title}></span>
+                    {
+                      project.image ? (
+                        typeof project.image === "string" ? (
+                          <img
+                            class="project-image"
+                            src={project.image}
+                            alt={project.title}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <Image
+                            class="project-image"
+                            src={project.image}
+                            alt={project.title}
+                            width={320}
+                            height={200}
+                            loading="lazy"
+                          />
+                        )
+                      ) : null
+                    }
+                    <div class="project-content">
+                      {project.role && (
+                        <span class="role-tag">{project.role}</span>
+                      )}
+                      <h3 class="project-title">{project.title}</h3>
+                      {project.description && (
+                        <p class="project-desc">{project.description}</p>
+                      )}
+                    </div>
+                    {project.link && (
+                      <a
+                        class="project-link"
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={project.title}
+                      >
+                        ↗
+                      </a>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </main>
+    <Footer />
+    <script>
+      type Active = { update: () => void; cleanup: () => void };
+      let active: Active | null = null;
+
+      function setupTimeline() {
+        // 先清理上一页残留的监听，防止引用到已分离的旧 DOM
+        if (active) { active.cleanup(); active = null; }
+
+        const container = document.querySelector('.timeline-container') as HTMLElement | null;
+        const spine = document.querySelector('.timeline-spine') as HTMLElement | null;
+        const spineHead = spine?.querySelector('.spine-head') as HTMLElement | null;
+        const dots = document.querySelectorAll<HTMLElement>('.project-dot');
+        if (!container || !spine || !dots.length) return;
+
+        // 记录已碰撞的圆点，离开后清除，实现可重复触发
+        const colliding = new Set<HTMLElement>();
+        // 每个年份段当前碰撞的圆点计数，0→1 时触发呼吸
+        const yearHitCount = new Map<HTMLElement, number>();
+        // 首次同步只对齐状态不 log，避免导航回来恢复滚动位置时一次性爆发
+        let ready = false;
+
+        function update() {
+          const rect = container!.getBoundingClientRect();
+          const viewportCenter = window.innerHeight / 2;
+
+          // 最后一个圆点的中心（相对容器顶部），线到此为止不再下探
+          const lastDot = dots[dots.length - 1];
+          const lastDotRect = lastDot.getBoundingClientRect();
+          const maxEnd = lastDotRect.top + lastDotRect.height / 2 - rect.top;
+
+          // 时间轴前端跟着视口中心走，但不超过最后一个点
+          const spineEndY = viewportCenter - rect.top;
+          const clamped = Math.max(0, Math.min(maxEnd, spineEndY));
+          spine!.style.height = clamped + 'px';
+          // 时间轴未开始绘制时隐藏笔头，避免浮在 hero 区域
+          if (spineHead) spineHead.style.opacity = clamped > 0 ? '1' : '0';
+
+          // ── 真正的碰撞检测 ──
+          // 时间轴前端在视口中的 y 坐标
+          const spineFrontY = rect.top + clamped;
+
+          dots.forEach((dot) => {
+            const dotRect = dot.getBoundingClientRect();
+            const dotCenterY = dotRect.top + dotRect.height / 2;
+            const isHit = spineFrontY >= dotCenterY;
+
+            if (isHit && !colliding.has(dot)) {
+              colliding.add(dot);
+
+              // A: 圆点填色
+              dot.classList.add("passed");
+
+              // D: 波纹爆发
+              const ripple = document.createElement("div");
+              ripple.className = "dot-ripple";
+              dot.appendChild(ripple);
+              ripple.addEventListener("animationend", () => ripple.remove());
+
+              // G: 年份呼吸（0→1 触发，归零后再次进入可重复触发）
+              const section = dot.closest(".timeline-year") as HTMLElement | null;
+              if (section) {
+                const count = yearHitCount.get(section) ?? 0;
+                yearHitCount.set(section, count + 1);
+                if (count === 0) {
+                  const marker = section.querySelector(".year-marker") as HTMLElement | null;
+                  if (marker) {
+                    marker.classList.add("breathing");
+                    marker.addEventListener("animationend", () => marker.classList.remove("breathing"), { once: true });
+                  }
+                }
+              }
+
+              if (ready) console.log(dot.dataset.title);
+            } else if (!isHit && colliding.has(dot)) {
+              colliding.delete(dot);
+
+              // A: 取消填色（可逆）
+              dot.classList.remove("passed");
+
+              // G: 年份计数 -1
+              const section = dot.closest(".timeline-year") as HTMLElement | null;
+              if (section) {
+                const count = yearHitCount.get(section) ?? 0;
+                if (count > 0) yearHitCount.set(section, count - 1);
+              }
+            }
+          });
+          ready = true;
+        }
+
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+
+        // 字体异步加载引发 reflow，末点视口坐标会漂移，但各容器尺寸往往不变，
+        // ResizeObserver 抓不住这场平移。改用 rAF 轮询校正：每帧重算，
+        // 末点坐标连续稳定 ~500ms 后自动停止，3s 超时兜底。
+        const lastDot = dots[dots.length - 1];
+        let lastY = -Infinity, stable = 0, rafId = 0;
+        const poll = () => {
+          update();
+          const r = lastDot.getBoundingClientRect();
+          const y = r.top + r.height / 2;
+          if (Math.abs(y - lastY) < 0.5) {
+            if (++stable >= 30) return;
+          } else { stable = 0; }
+          lastY = y;
+          rafId = requestAnimationFrame(poll);
+        };
+        const pollStop = setTimeout(() => cancelAnimationFrame(rafId), 3000);
+        rafId = requestAnimationFrame(poll);
+
+        update();
+
+        active = {
+          update,
+          cleanup() {
+            window.removeEventListener('scroll', update);
+            window.removeEventListener('resize', update);
+            clearTimeout(pollStop);
+            cancelAnimationFrame(rafId);
+          }
+        };
+      }
+
+      // 首次加载 + 每次 View Transitions 导航后触发（此时新 DOM 已就位）
+      document.addEventListener('astro:page-load', setupTimeline);
+      // DOM 即将替换前移除监听，避免引用已分离的旧节点
+      document.addEventListener('astro:before-swap', () => {
+        if (active) { active.cleanup(); active = null; }
+      });
+    </script>
+  </body>
+</html>

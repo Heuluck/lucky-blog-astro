@@ -34,6 +34,12 @@ const friends: Friend[] = [
     avatar: avatarAsadz,
   },
 ];
+
+// 随机排列
+for (let i = friends.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1));
+  [friends[i], friends[j]] = [friends[j], friends[i]];
+}
 ---
 
 <!doctype html>
@@ -70,6 +76,12 @@ const friends: Friend[] = [
         font-size: 1.05rem;
         line-height: 1.7;
         color: rgb(var(--gray));
+      }
+      .shuffle-note {
+        margin: 1rem 0 0;
+        font-size: 0.8rem;
+        color: rgb(var(--gray));
+        opacity: 0.7;
       }
 
       /* ── 液态玻璃卡片列表 ── */
@@ -303,6 +315,7 @@ const friends: Friend[] = [
         </p>
       </header>
 
+      <p class="shuffle-note">*随机排列</p>
       <div class="friends-grid">
         {
           friends.map((friend, i) => (

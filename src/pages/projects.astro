@@ -189,7 +189,7 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
         left: -35px;
         top: 50%;
         width: 35px;
-        height: 1px;
+        height: 1.5px;
         background: rgb(var(--gray-light));
       }
 
@@ -254,6 +254,7 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 4px;
         width: 32px;
         height: 32px;
         font-size: 1.1rem;
@@ -263,9 +264,17 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
         transition: all 0.2s ease;
         z-index: 1;
       }
-      .project-link:hover {
-        transform: translate(2px, -2px);
-        background: rgba(var(--gray-light), 0.4);
+      .link-text {
+        display: none;
+      }
+      .link-arrow {
+        flex-shrink: 0;
+      }
+      @media (hover: hover) {
+        .project-link:hover {
+          transform: translate(2px, -2px);
+          background: rgba(var(--gray-light), 0.4);
+        }
       }
 
       /* ── 暗色模式 ── */
@@ -340,9 +349,25 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
           padding-right: 0;
         }
         .project-link {
-          top: auto;
-          bottom: 24px;
-          right: 0;
+          position: static;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          width: 100%;
+          margin-top: 12px;
+          padding: 10px 0;
+          font-size: 0.9rem;
+          color: var(--accent);
+          border: 1px solid var(--accent);
+          border-radius: 8px;
+        }
+        .link-text {
+          display: inline;
+        }
+        .project-link:active {
+          background: var(--accent);
+          color: #fff;
         }
       }
     </style>
@@ -415,7 +440,8 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
                         rel="noopener noreferrer"
                         title={project.title}
                       >
-                        ↗
+                        <svg class="link-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11L11 3"/><path d="M5 3h6v6"/></svg>
+                        <span class="link-text">查看项目</span>
                       </a>
                     )}
                   </article>

@@ -54,7 +54,7 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
       /* ── 脊柱 ── */
       .timeline-spine {
         position: absolute;
-        left: 38.5px;
+        left: 42.5px;
         top: 0;
         width: 3px;
         height: 0;
@@ -86,18 +86,25 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
       /* ── 年份段落 ── */
       .timeline-year {
         position: relative;
+        display: flex;
+        align-items: flex-start;
         padding-top: 24px;
         padding-bottom: 12px;
       }
       .timeline-year + .timeline-year {
         margin-top: 48px;
       }
+      .year-projects {
+        flex: 1;
+        min-width: 0;
+      }
 
-      /* ── 年份标记 (竖排，跨脊柱) ── */
+      /* ── 年份标记 (竖排，跨脊柱，sticky) ── */
       .year-marker {
-        position: absolute;
-        left: -64px;
-        top: 0;
+        position: sticky;
+        top: 80px;
+        flex-shrink: 0;
+        margin-left: -64px;
         font-family: "Atkinson", sans-serif;
         font-size: 5rem;
         font-weight: 800;
@@ -108,7 +115,7 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
         text-orientation: mixed;
         user-select: none;
         opacity: 0.12;
-        z-index: 0;
+        z-index: 5;
       }
 
       /* ── 项目行 ── */
@@ -167,14 +174,12 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
         100% { transform: scale(1);   opacity: 0; }
       }
 
-      /* G ── 年份呼吸 ── */
-      .year-marker.breathing {
-        animation: year-breathe 1.2s ease-in-out;
+      /* G ── 年份高亮（进入年份段时保持，仅一个激活） ── */
+      .year-marker {
+        transition: opacity 0.4s ease;
       }
-      @keyframes year-breathe {
-        0%   { opacity: 0.12; }
-        25%  { opacity: 0.35; }
-        100% { opacity: 0.12; }
+      .year-marker.active {
+        opacity: 0.35;
       }
 
       /* 连接脊柱的水平短线 */
@@ -305,8 +310,9 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
           left: 24px;
         }
         .year-marker {
-          left: -38px;
+          margin-left: -38px;
           font-size: 3.5rem;
+          top: 72px;
         }
         .project-row {
           flex-direction: column;
@@ -438,6 +444,8 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
         const colliding = new Set<HTMLElement>();
         // 每个年份段当前碰撞的圆点计数，0→1 时触发呼吸
         const yearHitCount = new Map<HTMLElement, number>();
+        // 当前高亮的年份段，同时只允许一个
+        let activeSection: HTMLElement | null = null;
         // 首次同步只对齐状态不 log，避免导航回来恢复滚动位置时一次性爆发
         let ready = false;
 
@@ -478,17 +486,20 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
               dot.appendChild(ripple);
               ripple.addEventListener("animationend", () => ripple.remove());
 
-              // G: 年份呼吸（0→1 触发，归零后再次进入可重复触发）
+              // G: 年份高亮（互斥，进入新段时旧段自动熄灭）
               const section = dot.closest(".timeline-year") as HTMLElement | null;
               if (section) {
                 const count = yearHitCount.get(section) ?? 0;
                 yearHitCount.set(section, count + 1);
-                if (count === 0) {
-                  const marker = section.querySelector(".year-marker") as HTMLElement | null;
-                  if (marker) {
-                    marker.classList.add("breathing");
-                    marker.addEventListener("animationend", () => marker.classList.remove("breathing"), { once: true });
+                if (count === 0 && activeSection !== section) {
+                  // 熄灭上一个
+                  if (activeSection) {
+                    const prevMarker = activeSection.querySelector(".year-marker");
+                    prevMarker?.classList.remove("active");
                   }
+                  activeSection = section;
+                  const marker = section.querySelector(".year-marker");
+                  marker?.classList.add("active");
                 }
               }
 
@@ -499,14 +510,37 @@ const years = [...grouped.keys()].sort((a, b) => b - a);
               // A: 取消填色（可逆）
               dot.classList.remove("passed");
 
-              // G: 年份计数 -1
+              // G: 年份计数 -1，归零时若为当前激活段则熄灭
               const section = dot.closest(".timeline-year") as HTMLElement | null;
               if (section) {
                 const count = yearHitCount.get(section) ?? 0;
                 if (count > 0) yearHitCount.set(section, count - 1);
+                if (count === 1 && activeSection === section) {
+                  const marker = section.querySelector(".year-marker");
+                  marker?.classList.remove("active");
+                  activeSection = null;
+                }
               }
             }
           });
+          // 回补：确保最后一个有碰撞的年份段被激活
+          const sections = document.querySelectorAll<HTMLElement>(".timeline-year");
+          let nextActive: HTMLElement | null = null;
+          for (let i = sections.length - 1; i >= 0; i--) {
+            if ((yearHitCount.get(sections[i]) ?? 0) > 0) {
+              nextActive = sections[i];
+              break;
+            }
+          }
+          if (nextActive !== activeSection) {
+            if (activeSection) {
+              activeSection.querySelector(".year-marker")?.classList.remove("active");
+            }
+            activeSection = nextActive;
+            if (nextActive) {
+              nextActive.querySelector(".year-marker")?.classList.add("active");
+            }
+          }
           ready = true;
         }
 

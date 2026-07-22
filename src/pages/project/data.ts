@@ -44,7 +44,7 @@ export const projects: Project[] = [
       "从WordPress迁移到Hexo、Hugo，又从Hugo迁移到Astro，25年iOS 26发布，液态玻璃特效实在惊艳。利用View-Transition API做了一个灵动的玻璃导航栏，随之构思了一个全新的博客主题。",
     link: "https://github.com/Heuluck/lucky-blog-astro",
     status: "进行中",
-    role: "全栈开发",
+    role: "前端开发",
   },
   {
     title: "LLPKGStore",

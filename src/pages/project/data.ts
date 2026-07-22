@@ -1,7 +1,11 @@
 import type { ImageMetadata } from "astro";
-import placeholder1 from "../../assets/blog-placeholder-1.jpg";
-import placeholder2 from "../../assets/blog-placeholder-2.jpg";
-import placeholder3 from "../../assets/blog-placeholder-3.jpg";
+import geniusRank from "../../assets/projects/Genius Rank.webp";
+import qiniu from "../../assets/projects/七牛云.webp";
+import ncuHome from "../../assets/projects/南大家园.webp";
+import storyKitchen from "../../assets/projects/故事厨房.webp";
+import storyKitchenMini from "../../assets/projects/故事厨房小程序.mm.webp";
+import roamAI from "../../assets/projects/漫游指北AI.webp";
+import elecQuery from "../../assets/projects/电费查询.webp";
 
 export interface Project {
   title: string;
@@ -26,6 +30,7 @@ export const projects: Project[] = [
   {
     title: "iNCU 5.15升级维护",
     year: 2026,
+    image: ncuHome,
     description:
       "iNCU 5.15版本升级维护，修复奇葩bug，升级小组件，添加午课。",
     link: "https://incu.ncu.edu.cn/",
@@ -44,6 +49,7 @@ export const projects: Project[] = [
   {
     title: "LLPKGStore",
     year: 2025,
+    image: qiniu,
     description:
       "在上海七牛云实习期间做的项目，大体是为LLGo（基于LLVM，支持C/C++和Python的Go编译器）提供一个包管理器。用了Conan等工具。小组纠结了很久怎么把各种奇葩C/C++版本号转成Go要求的Semver格式。",
     link: "https://github.com/xgo-dev/llpkg",
@@ -53,6 +59,7 @@ export const projects: Project[] = [
   {
     title: "Genius Rank",
     year: 2024,
+    image: geniusRank,
     description:
       "荣获第一名的第三届七牛云1024创作节「对对队」参赛作品。Genius Rank通过调用GitHub API分析用户活动，实现评分、国籍猜测（赛题要求）与排名，并附带GitHub Stats生成器可嵌入个人主页展示评分。应用了Remix的服务端渲染、渐进增强等理念。",
     link: "https://github.com/Team-DuiDuiDui/GeniusRank",
@@ -70,6 +77,7 @@ export const projects: Project[] = [
   {
     title: "漫游指北AI版",
     year: 2024,
+    image: roamAI,
     description:
       "NCUHOME的南昌大学迎新项目，利用AI指导新生熟悉校园环境。大一新生只需要向「小家园」提问便可以获得校园内的路线指引、校园设施和学校生活的相关信息。使用React开发。",
     status: "已完成",
@@ -87,6 +95,7 @@ export const projects: Project[] = [
   {
     title: "电费查询",
     year: 2024,
+    image: elecQuery,
     description:
       "iNCU App电费查询迭代项目，从以往的React Native迁移到web端，支持查询宿舍电费，更支持电费日历和缴费查询功能，用电情况一目了然。",
     status: "已完成",
@@ -104,6 +113,7 @@ export const projects: Project[] = [
   {
     title: "故事厨房（小程序）",
     year: 2024,
+    image: storyKitchenMini,
     description:
       "将Web版故事厨房（见下）改造成小程序，使用 Taro 框架开发，支持微信小程序。在原有基础上彻底重构（😭），添加了许多动效和新功能。",
     status: "已完成",
@@ -112,6 +122,7 @@ export const projects: Project[] = [
   {
     title: "故事厨房",
     year: 2023,
+    image: storyKitchen,
     description:
       "Hackweek比赛项目、加入NCUHOME后做的第一个项目。选择调料（心情）和食材（故事事件和物品），使用大模型生成一段完整的故事。",
     status: "已完成",

@@ -353,18 +353,19 @@ const friends: Friend[] = [
     </main>
     <Footer />
     <script>
-      // 客户端随机排列好友卡片
-      const grid = document.querySelector('.friends-grid');
-      if (grid) {
-        const cards = [...grid.children];
+      function shuffleFriends() {
+        const grid = document.querySelector('.friends-grid');
+        if (!grid) return;
+        const cards = [...grid.children] as HTMLElement[];
         for (let i = cards.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [cards[i], cards[j]] = [cards[j], cards[i]];
         }
         grid.replaceChildren(...cards);
-        // 按新位置重设动画延迟
-        cards.forEach((card, i) => (card as HTMLElement).style.setProperty('--i', String(i)));
+        cards.forEach((card, i) => card.style.setProperty('--i', String(i)));
       }
+      shuffleFriends();
+      document.addEventListener('astro:page-load', shuffleFriends);
     </script>
   </body>
 </html>

@@ -35,11 +35,6 @@ const friends: Friend[] = [
   },
 ];
 
-// 随机排列
-for (let i = friends.length - 1; i > 0; i--) {
-  const j = Math.floor(Math.random() * (i + 1));
-  [friends[i], friends[j]] = [friends[j], friends[i]];
-}
 ---
 
 <!doctype html>
@@ -324,7 +319,7 @@ for (let i = friends.length - 1; i > 0; i--) {
               href={friend.url}
               target="_blank"
               rel="noopener noreferrer"
-              style={`--i: ${i}`}
+
             >
               <Image class="friend-avatar" src={friend.avatar} alt={friend.name} width={80} height={80} />
               <div class="friend-info">
@@ -357,5 +352,19 @@ for (let i = friends.length - 1; i > 0; i--) {
       </div>
     </main>
     <Footer />
+    <script>
+      // 客户端随机排列好友卡片
+      const grid = document.querySelector('.friends-grid');
+      if (grid) {
+        const cards = [...grid.children];
+        for (let i = cards.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [cards[i], cards[j]] = [cards[j], cards[i]];
+        }
+        grid.replaceChildren(...cards);
+        // 按新位置重设动画延迟
+        cards.forEach((card, i) => (card as HTMLElement).style.setProperty('--i', String(i)));
+      }
+    </script>
   </body>
 </html>
